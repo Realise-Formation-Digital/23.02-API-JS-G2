@@ -7,23 +7,12 @@ async function displayData() {
     const beerDetails = res.data;
     console.log(beerDetails);
 
-    // Vérifier si beerDetails est une liste ou une seule valeur
-    if (Array.isArray(beerDetails)) {
-      // Si beerDetails est une liste, itérer à travers les éléments
-      
-      const colElement = document.getElementById("listeBeerIngredients");
-      for (let tout of beerDetails) {
-        // Créer et ajouter les éléments HTML pour chaque élément
-        const divEl = createBeerElement(tout);
-        colElement.appendChild(divEl);
-      }
-    } else {
-      console.log("notarray")
+ 
       // Si beerDetails est une seule valeur, créer et ajouter l'élément HTML directement
       const colElement = document.getElementById("listeBeerIngredients");
       const divEl = createBeerElement(beerDetails);
       colElement.appendChild(divEl);
-    }
+    
   } catch (e) {
     console.error(e);
   }
