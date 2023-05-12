@@ -46,6 +46,7 @@ function createBeerElement(beer) {
           <h5 class="card-title">${beer.description}</h5>
         </div>
         <p class="card-text">${beer.brewers_tips}</p>
+        <p class="card-text"><i>Contributed by :  + ${beer.contributed_by}</i></p>
       </div>
     
  
@@ -62,7 +63,7 @@ function createBeerIngredients(beer) {
   <div class="accordion" id="ingredientsAccordion">
   <div class="accordion-item">
     <h2 class="accordion-header" id="maltHeading">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#maltCollapse" aria-expanded="true" aria-controls="maltCollapse">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#maltCollapse" aria-expanded="false" aria-controls="maltCollapse">
         Malt
       </button>
     </h2>
