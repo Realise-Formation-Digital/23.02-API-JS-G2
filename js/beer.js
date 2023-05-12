@@ -10,6 +10,7 @@ async function displayData() {
     // Vérifier si beerDetails est une liste ou une seule valeur
     if (Array.isArray(beerDetails)) {
       // Si beerDetails est une liste, itérer à travers les éléments
+      
       const colElement = document.getElementById("listeBeerIngredients");
       for (let tout of beerDetails) {
         // Créer et ajouter les éléments HTML pour chaque élément
@@ -17,6 +18,7 @@ async function displayData() {
         colElement.appendChild(divEl);
       }
     } else {
+      console.log("notarray")
       // Si beerDetails est une seule valeur, créer et ajouter l'élément HTML directement
       const colElement = document.getElementById("listeBeerIngredients");
       const divEl = createBeerElement(beerDetails);
@@ -64,7 +66,7 @@ function createBeerIngredients(beer) {
         Malt
       </button>
     </h2>
-    <div id="maltCollapse" class="accordion-collapse collapse show" aria-labelledby="maltHeading" data-bs-parent="#ingredientsAccordion">
+    <div id="maltCollapse" class="accordion-collapse collapse" aria-labelledby="maltHeading" data-bs-parent="#ingredientsAccordion">
       <div class="accordion-body bg-success">
         <ul>
           ${beer.ingredients.malt
@@ -97,7 +99,6 @@ function createBeerIngredients(beer) {
     </div>
   </div>
 </div>
-
     `;
   return divEl;
 }
