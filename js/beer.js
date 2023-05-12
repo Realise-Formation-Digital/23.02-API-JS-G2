@@ -21,7 +21,7 @@ async function displayData() {
 function createBeerElement(beer) {
   const divEl = document.createElement("div");
   const modalTitleEl = document.getElementById("modalLabel");
-  modalTitleEl.textContent = beer.name + " - Since : " + beer.first_brewed;
+  modalTitleEl.textContent = beer.name + " (Since : " + beer.first_brewed + ")";
 
   divEl.innerHTML = `
       <div class="card" style="width:100%;">
