@@ -35,6 +35,7 @@ function createBeerElement(beer) {
   divEl.innerHTML = `
       <div class="card" style="width:100%;">
         <div class="card-body">
+        <p class="card-text text-center">${beer.tagline}</p>
           <div class="row">
             <div class="col text-center">
             <img src=${beer.image_url} alt="Beer Picture" style="width:80px;height:auto;" class="center">
@@ -50,51 +51,53 @@ function createBeerElement(beer) {
   const ingredientsDiv = createBeerIngredients(beer);
   divEl.appendChild(ingredientsDiv);
   divEl.classList.add("col");
-  divEl.addEventListener("click", function afficherIngredients() {
-    alert(beer.name);
-  });
   return divEl;
 }
 
 function createBeerIngredients(beer) {
   const divEl = document.createElement("div");
   divEl.innerHTML = `
-      <div class="row">
-        <div class="col">
-          <div class="card">
-            <div class="card-header">
-              Malt
-            </div>
-            <div class="card-body bg-success">
-              <ul>
-                ${beer.ingredients.malt
-                  .map(
-                    (malt) =>
-                      `<li>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
-                  )
-                  .join("")}
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-header">
-              Hops
-            </div>
-            <div class="card-body bg-info">
-              <ul>
-                ${beer.ingredients.hops
-                  .map(
-                    (hop) =>
-                      `<li>${hop.name}: ${hop.amount.value} ${hop.amount.unit} - ${hop.add}</li>`
-                  )
-                  .join("")}
-              </ul>
-            </div>
-          </div>
-        </div>
+  <div class="accordion" id="ingredientsAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="maltHeading">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#maltCollapse" aria-expanded="true" aria-controls="maltCollapse">
+        Malt
+      </button>
+    </h2>
+    <div id="maltCollapse" class="accordion-collapse collapse show" aria-labelledby="maltHeading" data-bs-parent="#ingredientsAccordion">
+      <div class="accordion-body bg-success">
+        <ul>
+          ${beer.ingredients.malt
+            .map(
+              (malt) =>
+                `<li>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
+            )
+            .join("")}
+        </ul>
       </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="hopsHeading">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#hopsCollapse" aria-expanded="false" aria-controls="hopsCollapse">
+        Hops
+      </button>
+    </h2>
+    <div id="hopsCollapse" class="accordion-collapse collapse" aria-labelledby="hopsHeading" data-bs-parent="#ingredientsAccordion">
+      <div class="accordion-body bg-success">
+        <ul>
+          ${beer.ingredients.hops
+            .map(
+              (hop) =>
+                `<li>${hop.name}: ${hop.amount.value} ${hop.amount.unit}</li>`
+            )
+            .join("")}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
     `;
   return divEl;
 }
