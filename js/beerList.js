@@ -19,10 +19,18 @@ async function getBeers() {
 
             const node = document.createElement('div');
 
-            //"1-)const textNode = document.createTextNode(beer.date);"
+            const textNode = document.createTextNode(beer.date);
 
             // pour commentaire 1-) trouvé une solution pour "show" le première bière parce qu'il a bloquer!!(x) resolu
-            node.innerHTML = 
+            node.innerHTML = `<div class="card d-line">
+                <img src="${beer.image_url}" class="card-img-top" alt="${beer.name}">
+                <div class="card-body">
+                <h5 class="card-title">${beer.tagline}</h5>
+                <p class="card-text">${beer.first_brewed}</p>
+                <p class="card-text">${beer.description}</p>
+                <button type="button" class="btn btn-primary" id="${beer.id}">Détail</button>
+              </div>
+            </div>`
 
             node.classList.add('col')
 
