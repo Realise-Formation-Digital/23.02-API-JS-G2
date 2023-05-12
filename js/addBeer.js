@@ -78,7 +78,7 @@ document.getElementById("submitBeer").addEventListener("click", () => {
             successMessageEl.innerHTML = "La bière a bien été ajoutée.";
             successMessageEl.classList.add("alert");
             successMessageEl.classList.add("alert-success");
-            successMessageEl.innerText = `La bière ${beer.data.name} a bien été ajoutée ou modifiée.`;
+            successMessageEl.innerText = `La bière ${beer.data.name} a bien été ajoutée.`;
             const successElement = document.getElementById("successMessage");
             successElement.innerHTML = '';
             successElement.appendChild(successMessageEl);
