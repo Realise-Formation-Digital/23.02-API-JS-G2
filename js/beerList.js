@@ -1,15 +1,26 @@
 import { API_BASE_URL } from "../constants/constants.js";
 import { beersListener } from "./beer.js";
 
+const totalBeers = 25;
+let page = 1;
+let perPage = 12;
+let beerFilter = "";
+
 /**
- * Get beers (12 beers per page)
+ * Get beers
  *
  * @returns {Promise<void>}
  */
 async function getBeers() {
     try {
-        const response = await axios.get(API_BASE_URL + 'beers?per_page=12');
-        const beerList = response.data
+        const response = await axios.get(API_BASE_URL + `beers?page=${page}&per_page=${perPage}&beer_filter=${beerFilter}`);
+        const beerList = response.data;
+        let beerListEl = document.getElementById("beerList");
+        beerListEl.innerHTML = "";
+
+        // add pagination elements
+        paginationEl();
+        paginationBeersListener();
 
         for (let beer of beerList) {
 
@@ -92,7 +103,7 @@ async function getBeers() {
             element.id = beer.id;
             element.appendChild(card);
 
-            document.getElementById("beerList").appendChild(element);
+            beerListEl.appendChild(element);
         }
 
         beersListener();
@@ -100,6 +111,67 @@ async function getBeers() {
     } catch (e) {
         throw e;
     }
+}
+
+/**
+ * Pagination create elements
+ */
+function paginationEl() {
+    let nbPage;
+    if (totalBeers % perPage === 0) {
+        nbPage = totalBeers / perPage;
+    } else {
+        nbPage = Math.floor(totalBeers / perPage) + 1;
+    }
+
+    let ulPagination = document.getElementById("pagination");
+    ulPagination.innerHTML = "";
+    //create buttons pages
+    for (let pageNumber = 1; pageNumber <= nbPage; pageNumber++) {
+        const aPageEl = document.createElement("a");
+        aPageEl.href = "#";
+        aPageEl.classList.add("page-link");
+        aPageEl.value = pageNumber;
+        aPageEl.innerHTML = pageNumber.toString();
+
+        const liPage = document.createElement("li");
+        liPage.classList.add("page-item");
+        if (pageNumber === page) {
+            liPage.classList.add("active");
+        }
+        liPage.appendChild(aPageEl);
+
+        ulPagination.appendChild(liPage);
+    }
+}
+
+/**
+ * Search beers listener
+ */
+let searchBeers = document.getElementById("searchBeers");
+searchBeers.addEventListener("keyup", async (e)  => {
+    try {
+        beerFilter = e.target.value;
+        await getBeers();
+    } catch(e) {
+        throw e;
+    }
+})
+
+/**
+ * Pagination beers listener
+ */
+const paginationBeersListener = function() {
+    document.querySelectorAll('li.page-item').forEach(beerPageLi => {
+        beerPageLi.addEventListener('click', async (e) => {
+            try {
+                page = e.target.value;
+                await getBeers();
+            } catch(e) {
+                throw e;
+            }
+        });
+    });
 }
 
 await getBeers();
