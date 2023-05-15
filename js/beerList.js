@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "../constants/constants.js";
+import { beersListener } from "./beer.js";
 
 const totalBeers = 25;
 let page = 1;
@@ -104,6 +105,8 @@ async function getBeers() {
 
             beerListEl.appendChild(element);
         }
+
+        beersListener();
         
     } catch (e) {
         throw e;

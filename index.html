@@ -8,7 +8,6 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="./css/beerList.css" rel="stylesheet">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="module" src="./js/beer.js"></script>
     <script type="module" src="./js/beerList.js"></script>
 </head>
 <body>
@@ -28,12 +27,13 @@
     <div class="modal fade" id="beerModal" tabindex="-1" aria-labelledby="beerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="modalLabel">
                     <!-- Beer name -->
                     <h1 class="modal-title fs-5" id="beerName"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                <div class="modal-body">
+                <div class="modal-body" id="beerDetails">
                     <!-- Beer informations and ingredients -->
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
