@@ -5,10 +5,12 @@ import { API_BASE_URL } from "../constants/constants.js";
  *
  * @returns {Promise<void>}
  */
-async function getBeers() {
+async function getBeers(beerFilter) {
     try {
-        const response = await axios.get(API_BASE_URL + 'beers?per_page=12');
-        const beerList = response.data
+        const response = await axios.get(API_BASE_URL + 'beers?per_page=12&beer_filter=' + beerFilter);
+        const beerList = response.data;
+        let beerListEl = document.getElementById("beerList");
+        beerListEl.innerHTML = "";
 
         for (let beer of beerList) {
 
@@ -91,7 +93,7 @@ async function getBeers() {
             element.id = beer.id;
             element.appendChild(card);
 
-            document.getElementById("beerList").appendChild(element);
+            beerListEl.appendChild(element);
         }
         
     } catch (e) {
@@ -99,4 +101,15 @@ async function getBeers() {
     }
 }
 
-await getBeers();
+let searchBeers = document.getElementById("searchBeers");
+searchBeers.addEventListener("keyup", async (e)  => {
+    try {
+        let beerFilter = e.target.value;
+        console.log(beerFilter);
+        await getBeers(beerFilter);
+    } catch(e) {
+        throw e;
+    }
+})
+
+await getBeers("");
