@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "../constants/constants.js";
+import { beersListener } from "./beer.js";
 
 /**
  * Get beers (12 beers per page)
@@ -93,6 +94,8 @@ async function getBeers() {
 
             document.getElementById("beerList").appendChild(element);
         }
+
+        beersListener();
         
     } catch (e) {
         throw e;

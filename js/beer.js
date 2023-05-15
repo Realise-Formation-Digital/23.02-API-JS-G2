@@ -1,28 +1,40 @@
 import { API_BASE_URL } from "../constants/constants.js";
 
-async function displayData() {
-  try {
-    const res = await axios.get(API_BASE_URL + "beers/4");
-    console.log(res);
-    const beerDetails = res.data;
-    console.log(beerDetails);
 
- 
-      // Si beerDetails est une seule valeur, créer et ajouter l'élément HTML directement
-      const colElement = document.getElementById("listeBeerIngredients");
-      const divEl = createBeerElement(beerDetails);
-      colElement.appendChild(divEl);
+const beersListener = async function() {
+  document.querySelectorAll('button.detail-button').forEach(detailButton => {
+    detailButton.addEventListener('click', async (e) => {
+      try {
+            
+            let beerId = e.target.parentNode.parentNode.parentNode.id;
+            let response = await axios.get(API_BASE_URL + "beers/" + beerId);
+            let beer = response.data;
+            console.log(beer);
+            
+            createBeerElement(beer);
+
+            // let beerIngredientsEl = document.getElementById("beerIngredients");
+            // beerIngredientsEl.innerHTML = beer.ingredients;
+            // let beerIngredients= document.getElementById("beerIngredients");
+            // beerIngredientsEl.innerHTML = beer.ingredients;
+
+            const beerModal = new bootstrap.Modal('#beerModal')
+            beerModal.show();
+          } catch(e) {
+            throw e;
+          }
+        });
+      });
+    }
     
-  } catch (e) {
-    console.error(e);
-  }
-}
+
 
 function createBeerElement(beer) {
+  console.log(beer)
   const divEl = document.createElement("div");
   const modalTitleEl = document.getElementById("modalLabel");
   modalTitleEl.textContent = beer.name + " (Since : " + beer.first_brewed + ")";
-
+console.log("dere");
   divEl.innerHTML = `
       <div class="card" style="width:100%;">
         <div class="card-body">
@@ -43,7 +55,9 @@ function createBeerElement(beer) {
   const ingredientsDiv = createBeerIngredients(beer);
   divEl.appendChild(ingredientsDiv);
   divEl.classList.add("col");
-  return divEl;
+  const beerDetailsEl = document.getElementById("beerDetails");
+  beerDetailsEl.innerHTML = "";
+  beerDetailsEl.appendChild(divEl);
 }
 
 function createBeerIngredients(beer) {
@@ -71,7 +85,7 @@ function createBeerIngredients(beer) {
   </div>
   <div class="accordion-item">
     <h2 class="accordion-header" id="hopsHeading">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#hopsCollapse" aria-expanded="false" aria-controls="hopsCollapse">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#hopsCollapse" aria-expanded="false" aria-controls="hopsCollapse">
         Hops
       </button>
     </h2>
@@ -93,4 +107,4 @@ function createBeerIngredients(beer) {
   return divEl;
 }
 
-displayData();
+export { beersListener }
