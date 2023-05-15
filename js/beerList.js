@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../constants/constants.js";
 import { beersListener } from "./beer.js";
 
-const totalBeers = 25;
+let totalBeers = 25;
 let page = 1;
 let perPage = 12;
 let beerFilter = "";
@@ -14,7 +14,8 @@ let beerFilter = "";
 async function getBeers() {
     try {
         const response = await axios.get(API_BASE_URL + `beers?page=${page}&per_page=${perPage}&beer_filter=${beerFilter}`);
-        const beerList = response.data;
+        const beerList = response.data.data;
+        totalBeers = response.data.metadata.total;
         let beerListEl = document.getElementById("beerList");
         beerListEl.innerHTML = "";
 
