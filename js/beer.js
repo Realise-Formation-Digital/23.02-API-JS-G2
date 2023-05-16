@@ -34,20 +34,20 @@ function createBeerElement(beer) {
   const divEl = document.createElement("div");
   const modalTitleEl = document.getElementById("modalLabel");
   modalTitleEl.textContent = beer.name + " (Since : " + beer.first_brewed + ")";
-console.log("dere");
+
   divEl.innerHTML = `
       <div class="card" style="width:100%;">
         <div class="card-body">
-        <p class="card-text text-center">${beer.tagline}</p>
+        <h5 class="card-text text-center mb-4">${beer.tagline}</h5>
           <div class="row">
             <div class="col text-center">
-            <img src=${beer.image_url} alt="Beer Picture" style="width:80px;height:auto;" class="center">
+            <img src=${beer.image_url} alt="Beer Picture" style="width:100px;height:auto;" class="center mt-2">
           </div>
           <div class="col">
-          <h5 class="card-title">${beer.description}</h5>
+          <h6 class="card-title">${beer.description}</h6>
         </div>
-        <p class="card-text">${beer.brewers_tips}</p>
-        <p class="card-text"><i>Contributed by :  + ${beer.contributed_by}</i></p>
+        <p class="card-text mt-3">${beer.brewers_tips}</p>
+        <p class="card-text mb-2"><i>Contributed by :  + ${beer.contributed_by}</i></p>
       </div>
     
  
@@ -62,7 +62,28 @@ console.log("dere");
 
 function createBeerIngredients(beer) {
   const divEl = document.createElement("div");
+ 
   divEl.innerHTML = `
+  <div class="accordion" id="ingredientsAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="foodPairing">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#foodPairingCollapse" aria-expanded="false" aria-controls="foodPairingCollapse">
+        Food Pairing
+      </button>
+    </h2>
+    <div id="foodPairingCollapse" class="accordion-collapse collapse" aria-labelledby="foodPairingHeading" data-bs-parent="#ingredientsAccordion">
+      <div class="accordion-body bg-success">
+        <ul>
+        ${beer.food_pairing
+          .map(
+            (food_pairing) =>
+            `<li>${food_pairing}</li>`
+            )
+            .join("")}
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="accordion" id="ingredientsAccordion">
   <div class="accordion-item">
     <h2 class="accordion-header" id="maltHeading">
@@ -79,6 +100,7 @@ function createBeerIngredients(beer) {
                 `<li>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
             )
             .join("")}
+             
         </ul>
       </div>
     </div>
@@ -98,6 +120,7 @@ function createBeerIngredients(beer) {
                 `<li>${hop.name}: ${hop.amount.value} ${hop.amount.unit}</li>`
             )
             .join("")}
+            
         </ul>
       </div>
     </div>
