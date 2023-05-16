@@ -23,7 +23,7 @@ async function sendBeer() {
         let foodPairing3 = form.elements['foodPairing3'].value;
 
         // construct jsonBody
-        let jsonBody = JSON.stringify({
+        let jsonBody = {
             "name": name,
             "tagline": tagline,
             "first_brewed": firstBrewed,
@@ -36,7 +36,7 @@ async function sendBeer() {
             ],
             "brewers_tips": brewersTips,
             "contributed_by": contributedBy
-        })
+        }
 
         // get id param
         const queryString = window.location.search;
@@ -45,18 +45,16 @@ async function sendBeer() {
 
         //if id, update beer
         if (id) {
-            return await axios.request({
-                url: API_BASE_URL + "beers/" + id,
-                method: 'put',
-                data: jsonBody
-            })
+            return await axios.put(
+                API_BASE_URL + "beers/" + id,
+                jsonBody
+            )
         // if no id, add beer
         } else {
-            return await axios.request({
-                url: API_BASE_URL + "beers",
-                method: 'post',
-                data: jsonBody
-            })
+            return await axios.post(
+                API_BASE_URL + "beers",
+                jsonBody
+            )
         }
 
     } catch (e) {
