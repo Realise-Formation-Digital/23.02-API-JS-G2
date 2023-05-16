@@ -31,7 +31,14 @@ async function getBeers() {
             buttonDelete.classList.add("btn-danger");
             buttonDelete.classList.add("float-end");
             buttonDelete.classList.add("delete-button");
-            buttonDelete.disabled = true;
+            buttonDelete.addEventListener('click', async function(){
+                const url = API_BASE_URL + 'beers?id=' + beer.id
+               console.log(url)
+               await axios({
+                method: 'delete',
+                url: url})
+                getBeers();
+            })
             buttonDelete.innerText = "Supprimer";
 
             //create detail button
