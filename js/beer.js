@@ -13,20 +13,18 @@ const beersListener = async function() {
             
             createBeerElement(beer);
 
-            // let beerIngredientsEl = document.getElementById("beerIngredients");
-            // beerIngredientsEl.innerHTML = beer.ingredients;
-            // let beerIngredients= document.getElementById("beerIngredients");
-            // beerIngredientsEl.innerHTML = beer.ingredients;
-
             const beerModal = new bootstrap.Modal('#beerModal')
             beerModal.show();
+
+            const test = document.getElementsByClassName('deleteIngredient')
+            console.log(test)
+
           } catch(e) {
             throw e;
           }
         });
       });
     }
-    
 
 
 function createBeerElement(beer) {
@@ -47,7 +45,7 @@ function createBeerElement(beer) {
           <h6 class="card-title">${beer.description}</h6>
         </div>
         <p class="card-text mt-3">${beer.brewers_tips}</p>
-        <p class="card-text mb-2"><i>Contributed by :  + ${beer.contributed_by}</i></p>
+        <p class="card-text mb-2"><i>Contributed by :   ${beer.contributed_by}</i></p>
       </div>
     
  
@@ -62,7 +60,8 @@ function createBeerElement(beer) {
 
 function createBeerIngredients(beer) {
   const divEl = document.createElement("div");
- 
+  
+ console.log(beer.ingredients.malt)
   divEl.innerHTML = `
   <div class="accordion" id="ingredientsAccordion">
   <div class="accordion-item">
@@ -97,7 +96,7 @@ function createBeerIngredients(beer) {
           ${beer.ingredients.malt
             .map(
               (malt) =>
-                `<li>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
+                `<li><button class="deleteIngredient btn btn-outline-warning btn-sm" type ="button" malt-id="${malt.id}" id="ingredients.malt">delete</button>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
             )
             .join("")}
              
@@ -117,7 +116,7 @@ function createBeerIngredients(beer) {
           ${beer.ingredients.hops
             .map(
               (hop) =>
-                `<li>${hop.name}: ${hop.amount.value} ${hop.amount.unit}</li>`
+                `<li><button class="deleteIngredient btn btn-outline-warning btn-sm" type="button" hops-id="${hop.id}" id=beer_ingredient.ingredient_id>delete</button>${hop.name}: ${hop.amount.value} ${hop.amount.unit} ${hop.id}</li>`
             )
             .join("")}
             
@@ -126,8 +125,34 @@ function createBeerIngredients(beer) {
     </div>
   </div>
 </div>
-    `;
+    `
+
+   
   return divEl;
+}
+
+
+
+
+
+function removeIngredients (){
+  for (let ingredients of beer_ingredient) {
+
+    //create delete button
+    const buttonDelete = document.createElement("button");
+    buttonDelete.classList.add("btn");
+    buttonDelete.classList.add("btn-danger");
+    buttonDelete.classList.add("float-end");
+    buttonDelete.classList.add("delete-button");
+    buttonDelete.disabled = false;
+    buttonDelete.innerText = "Supprimer";
+
+    //create card-body
+    const cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+    cardBody.appendChild();
+    cardBody.appendChild();
+  }
 }
 
 export { beersListener }
