@@ -25,6 +25,27 @@ async function getBeers() {
 
         for (let beer of beerList) {
 
+            //create update button
+            const buttonUpdate = document.createElement("button");
+            buttonUpdate.classList.add("btn");
+            buttonUpdate.classList.add("btn-warning");
+            buttonUpdate.classList.add("float-end");
+            buttonUpdate.classList.add("me-1");
+            buttonUpdate.classList.add("update-button");
+            buttonUpdate.innerText = "Modifier";
+
+            //create input hidden for update button
+            const inputUpdate = document.createElement("input");
+            inputUpdate.type = "hidden";
+            inputUpdate.name = "id";
+            inputUpdate.value = beer.id
+
+            //create form update button
+            const buttonUpdateForm = document.createElement("form");
+            buttonUpdateForm.action = `./add_beer.html?id=${beer.id}`;
+            buttonUpdateForm.appendChild(inputUpdate);
+            buttonUpdateForm.appendChild(buttonUpdate);
+
             //create delete button
             const buttonDelete = document.createElement("button");
             buttonDelete.classList.add("btn");
@@ -54,6 +75,7 @@ async function getBeers() {
             cardFooter.classList.add("card-footer");
             cardFooter.appendChild(buttonDetail);
             cardFooter.appendChild(buttonDelete);
+            cardFooter.appendChild(buttonUpdateForm);
 
             // create brewers-tips
             const brewersTips = document.createElement("li");
