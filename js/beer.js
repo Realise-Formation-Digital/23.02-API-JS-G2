@@ -15,9 +15,27 @@ const beersListener = async function() {
 
             const beerModal = new bootstrap.Modal('#beerModal')
             beerModal.show();
-
-            const test = document.getElementsByClassName('deleteIngredient')
-            console.log(test)
+           
+            const htmlElList = document.getElementsByClassName('deleteIngredient')
+            
+            for (let htmlEl of htmlElList) {
+              let ingId = "";
+              console.log(htmlEl)
+              htmlEl.addEventListener('click', function(evt){
+                evt.stopPropagation()
+                 const maltId = evt.target.getAttribute('malt-id')
+                 const hopId = evt.target.getAttribute('hop-id')
+                 if (!!maltId) {
+                  ingId = maltId
+                  console.log(ingId)
+                  axios.delete(API_BASE_URL + "beers/" + beerId + "/ingredients/" + ingId);
+                 }else{
+                  ingId = hopId
+                  axios.delete(API_BASE_URL + "beers/" + beerId + "/ingredients/" + ingId);
+                  console.log(ingId)
+                 }
+              })
+            }
 
           } catch(e) {
             throw e;
@@ -96,7 +114,7 @@ function createBeerIngredients(beer) {
           ${beer.ingredients.malt
             .map(
               (malt) =>
-                `<li><button class="deleteIngredient btn btn-outline-warning btn-sm" type ="button" malt-id="${malt.id}" id="ingredients.malt">delete</button>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
+                `<li><button class="me-2 deleteIngredient btn btn-outline-warning btn-sm" type ="button" malt-id="${malt.id}" id="ingredients.malt">delete</button>${malt.name}: ${malt.amount.value} ${malt.amount.unit}</li>`
             )
             .join("")}
              
@@ -116,7 +134,7 @@ function createBeerIngredients(beer) {
           ${beer.ingredients.hops
             .map(
               (hop) =>
-                `<li><button class="deleteIngredient btn btn-outline-warning btn-sm" type="button" hops-id="${hop.id}" id=beer_ingredient.ingredient_id>delete</button>${hop.name}: ${hop.amount.value} ${hop.amount.unit} ${hop.id}</li>`
+                `<li><button class="me-2 deleteIngredient btn btn-outline-warning btn-sm" type="button" hop-id="${hop.id}" id=beer_ingredient.ingredient_id>delete</button>${hop.name}: ${hop.amount.value} ${hop.amount.unit} ${hop.id}</li>`
             )
             .join("")}
             
