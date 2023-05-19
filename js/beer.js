@@ -54,6 +54,7 @@ const beersListener = async function() {
                   ingId = hopId
                   //requête de suppression HTTP est envoyée à une URL spécifique à l'aide de la bibliothèque Axios.
                   axios.delete(API_BASE_URL + "beers/" + beerId + "/ingredients/" + ingId);
+                  $('#myModal').modal('show');
                   
                  }
               })
