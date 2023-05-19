@@ -4,35 +4,57 @@ import { API_BASE_URL } from "../constants/constants.js";
 const beersListener = async function() {
   document.querySelectorAll('button.detail-button').forEach(detailButton => {
     detailButton.addEventListener('click', async (e) => {
+
       try {
             
             let beerId = e.target.parentNode.parentNode.parentNode.id;
             let response = await axios.get(API_BASE_URL + "beers/" + beerId);
             let beer = response.data;
-            console.log(beer);
+            
             
             createBeerElement(beer);
 
             const beerModal = new bootstrap.Modal('#beerModal')
             beerModal.show();
            
+
+            //récupère tous les éléments HTML qui ont la classe CSS "deleteIngredient". 
+            //Ces éléments sont stockés dans la variable htmlElList.
             const htmlElList = document.getElementsByClassName('deleteIngredient')
+
+           //Boucle utilisée pour itérer sur chaque élément de htmlElList. 
+           //La variable htmlEl représente chaque élément à chaque itération de la boucle. 
             
             for (let htmlEl of htmlElList) {
+              //  À l'intérieur de la boucle, une variable ingId est déclarée et initialisée avec une chaîne vide. 
+              // Cela servira à stocker l'identifiant de l'ingrédient à supprimer.
               let ingId = "";
-              console.log(htmlEl)
+              
+
+              //écouteur d'événements est ajouté à chaque élément HTML via htmlEl.addEventListener('click', function(evt) {...}). 
+              //Cela signifie que lorsque l'utilisateur clique sur cet élément, la fonction anonyme passée en argument sera exécutée.
               htmlEl.addEventListener('click', function(evt){
+
+                //evt.stopPropagation() est appelé pour arrêter la propagation de l'événement de clic. 
+                //Cela empêche l'événement de se propager aux éléments parents.
                 evt.stopPropagation()
+
+                //Les lignes suivantes extraient les valeurs des attributs HTML malt-id et hop-id à partir de l'élément sur lequel l'utilisateur a cliqué, 
+                //respectivement maltId et hopId. 
                  const maltId = evt.target.getAttribute('malt-id')
                  const hopId = evt.target.getAttribute('hop-id')
+                 //Si maltId est défini (non nul et non vide), cela signifie que l'élément cliqué est associé à un ingrédient de malt. 
+                 //Dans ce cas, ingId est mis à jour avec maltId
                  if (!!maltId) {
                   ingId = maltId
-                  console.log(ingId)
+                  
+                  //requête de suppression HTTP est envoyée à une URL spécifique à l'aide de la bibliothèque Axios.
                   axios.delete(API_BASE_URL + "beers/" + beerId + "/ingredients/" + ingId);
                  }else{
                   ingId = hopId
+                  //requête de suppression HTTP est envoyée à une URL spécifique à l'aide de la bibliothèque Axios.
                   axios.delete(API_BASE_URL + "beers/" + beerId + "/ingredients/" + ingId);
-                  console.log(ingId)
+                  
                  }
               })
             }
