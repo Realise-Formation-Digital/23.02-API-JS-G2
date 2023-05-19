@@ -25,13 +25,41 @@ async function getBeers() {
 
         for (let beer of beerList) {
 
+            //create update button
+            const buttonUpdate = document.createElement("button");
+            buttonUpdate.classList.add("btn");
+            buttonUpdate.classList.add("btn-warning");
+            buttonUpdate.classList.add("float-end");
+            buttonUpdate.classList.add("me-1");
+            buttonUpdate.classList.add("update-button");
+            buttonUpdate.innerText = "Modifier";
+
+            //create input hidden for update button
+            const inputUpdate = document.createElement("input");
+            inputUpdate.type = "hidden";
+            inputUpdate.name = "id";
+            inputUpdate.value = beer.id
+
+            //create form update button
+            const buttonUpdateForm = document.createElement("form");
+            buttonUpdateForm.action = `./add_beer.html?id=${beer.id}`;
+            buttonUpdateForm.appendChild(inputUpdate);
+            buttonUpdateForm.appendChild(buttonUpdate);
+
             //create delete button
             const buttonDelete = document.createElement("button");
             buttonDelete.classList.add("btn");
             buttonDelete.classList.add("btn-danger");
             buttonDelete.classList.add("float-end");
             buttonDelete.classList.add("delete-button");
-            buttonDelete.disabled = true;
+            buttonDelete.addEventListener('click', async function(){
+                const url = API_BASE_URL + 'beers?id=' + beer.id
+               console.log(url)
+               await axios({
+                method: 'delete',
+                url: url})
+                getBeers();
+            })
             buttonDelete.innerText = "Supprimer";
 
             //create detail button
@@ -47,6 +75,7 @@ async function getBeers() {
             cardFooter.classList.add("card-footer");
             cardFooter.appendChild(buttonDetail);
             cardFooter.appendChild(buttonDelete);
+            cardFooter.appendChild(buttonUpdateForm);
 
             // create brewers-tips
             const brewersTips = document.createElement("li");
