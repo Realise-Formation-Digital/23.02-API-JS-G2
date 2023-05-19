@@ -12,7 +12,7 @@ const beersListener = async function() {
             let beer = response.data;
             
             
-            createBeerElement(beer);
+            await createBeerElement(beer);
 
             const beerModal = new bootstrap.Modal('#beerModal')
             beerModal.show();
@@ -67,8 +67,7 @@ const beersListener = async function() {
     }
 
 
-function createBeerElement(beer) {
-  console.log(beer)
+async function createBeerElement(beer) {
   const divEl = document.createElement("div");
   const modalTitleEl = document.getElementById("modalLabel");
   modalTitleEl.textContent = beer.name + " (Since : " + beer.first_brewed + ")";
@@ -96,12 +95,20 @@ function createBeerElement(beer) {
   const beerDetailsEl = document.getElementById("beerDetails");
   beerDetailsEl.innerHTML = "";
   beerDetailsEl.appendChild(divEl);
+
+  const addIngredientTitle = document.createElement("h6");
+  addIngredientTitle.classList.add("mt-5");
+  addIngredientTitle.classList.add("mb-2");
+  addIngredientTitle.innerHTML = "Ajouter un ingrédient à la bière (non fonctionnel)";
+  beerDetailsEl.appendChild(addIngredientTitle);
+
+  const addIngredientEl = await addIngredient(beer);
+  beerDetailsEl.appendChild(addIngredientEl);
 }
 
 function createBeerIngredients(beer) {
   const divEl = document.createElement("div");
   
- console.log(beer.ingredients.malt)
   divEl.innerHTML = `
   <div class="accordion" id="ingredientsAccordion">
   <div class="accordion-item">
@@ -190,9 +197,35 @@ function removeIngredients (){
     //create card-body
     const cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
-    cardBody.appendChild();
-    cardBody.appendChild();
   }
+}
+
+async function addIngredient(beer) {
+    try {
+        let response = await axios.get(API_BASE_URL + "ingredients?per_page=1000");
+        let ingredients = response.data;
+
+        const addIngredientEl = document.createElement("select");
+        addIngredientEl.classList.add("form-select");
+
+        const beersIngredients = beer.ingredients.malt.concat(beer.ingredients.hops);
+        console.log(beersIngredients);
+
+        for(const ingredient of ingredients) {
+            // put ingredient in select if not in beers ingredients
+            if (!beersIngredients.find(ingredientEl => ingredientEl.id === ingredient.id)) {
+                const ingredientEl = document.createElement("option");
+                ingredientEl.innerHTML = ingredient.name;
+                ingredientEl.value = ingredient.id;
+                addIngredientEl.appendChild(ingredientEl);
+            }
+        }
+        return addIngredientEl;
+    } catch(e) {
+        throw e;
+    }
+
+
 }
 
 export { beersListener }
